@@ -38,8 +38,24 @@ $(document).ready(() => {
 
     cl('document.ready - 1201');
 
-    var hubProxy = $.connection.coffeeHub;
+
+
+
+    // 06/24/2021 07:56 am - SSN - [20210624-0756] - [001] - M04-04-Transport-negotiation
+
+    //var hubProxy = $.connection.coffeeHub;
+
+    console.log('Testing dynamic connection setting (Default sciprt)...');
+
+    const connection = new HubConnection("https://localhost:44315/");
+    var hubProxy = connection.CreateHubProxy("coffeeHub");
+
+    console.log('Done creating connection.');
+
+    
     setupConnection(hubProxy);
+
+
     $.connection.hub.start();
 
     document.getElementById("submit").addEventListener("click",
