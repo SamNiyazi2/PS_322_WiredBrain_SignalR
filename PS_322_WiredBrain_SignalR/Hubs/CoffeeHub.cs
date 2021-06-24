@@ -15,9 +15,10 @@ namespace PS_322_WiredBrain_SignalR.Hubs
 
     public class CoffeeHub : Hub<ICoffeeHub>
     {
+        
 
-        public const string GROUP_NAME_ALL_UPDATES_RECEIVERS = "GROUP_NAME_ALL_UPDATES_RECEIVERS";
-        public const string QUERY_STRING_GROUP_NAME_ALL_UPDATES = "QUERY_STRING_GROUP_NAME_ALL_UPDATED ";
+        public const string GROUP_NAME_ALL_UPDATES_RECEIVERS = "ReceiveOrderUpdate";
+        public const string QUERY_STRING_GROUP_NAME_ALL_UPDATES = "allUpdates";
 
         private static readonly OrderChecker _orderChecker = new OrderChecker(new Random());
 
