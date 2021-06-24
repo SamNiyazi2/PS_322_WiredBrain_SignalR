@@ -11,12 +11,12 @@ using System.Web;
 
 namespace PS_322_WiredBrain_SignalR.Hubs
 {
-    public class CoffeeHub:Hub
+    public class CoffeeHub : Hub<ICoffeeHub>
     {
         private static readonly OrderChecker _orderChecker = new OrderChecker(new Random());
 
-        
-        public async Task  GetUpdateForOrder ( Order order)
+
+        public async Task GetUpdateForOrder(Order order)
         {
 
             await Clients.Others.NewOrder(order);
@@ -31,7 +31,7 @@ namespace PS_322_WiredBrain_SignalR.Hubs
                 if (!result.New)
                     continue;
 
-                await Clients.Caller.ReceivOrderUpdate(result);
+                await Clients.Caller.ReceiveOrderUpdate(result);
 
 
             } while (!result.Finished);
