@@ -24,7 +24,7 @@ namespace PS_322_WiredBrain_SignalR
             app.MapSignalR<CoffeeConnection>("/coffee");
 
             // 06/24/2021 05:35 am - SSN - [20210624-0533] - [001] - M03-08 - Authentication and autherization
-            GlobalHost.HubPipeline.RequireAuthentication();
+           // GlobalHost.HubPipeline.RequireAuthentication();
 
         }
 
