@@ -15,6 +15,9 @@ namespace PS_322_WiredBrain_SignalR.Controllers
 {
     public class CoffeeController : ApiController
     {
+        // 09/26/2022 05:51 pm - SSN - Add lock
+        private readonly object lockObject = new object();
+
         private static int OrderId;
 
         [HttpPost]
@@ -22,10 +25,16 @@ namespace PS_322_WiredBrain_SignalR.Controllers
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CoffeeHub>();
 
-            hubContext.Clients.All.NewOrder(order);
+            // 09/26/2022 05:49 pm - SSN 
 
-            OrderId++;
-            return OrderId;
+            lock (lockObject)
+            {
+                OrderId++;
+                order.Id = OrderId;
+                hubContext.Clients.All.NewOrder(order);
+            }
+
+            return order.Id;
 
         }
     }

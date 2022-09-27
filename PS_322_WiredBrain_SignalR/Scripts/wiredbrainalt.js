@@ -8,15 +8,71 @@
 setupConnection = (hubProxy) => {
 
     hubProxy.on("receiveOrderUpdate", function (updateObject) {
+
         const statusDiv = document.getElementById("status");
         statusDiv.innerHTML = `Order: ${updateObject.OrderId}: ${updateObject.Update}`;
+
+        updateOrderDiv("receiveOrderUpdate", updateObject);
+
     });
 
     hubProxy.on("newOrder", function (order) {
+
+        updateOrderDiv("New Order:", order);
+
         const statusDiv = document.getElementById("status");
         statusDiv.innerHTML = `Somebody ordered an ${order.Product}`;
+
     });
 };
+
+// 09/26/2022 06:55 pm - SSN - Added
+function updateOrderDiv(message, order_or_update) {
+
+    let div = document.getElementById("ordersDiv");
+
+    let p2 = null;
+    let p3 = null;
+
+    console.log(message);
+    console.log(order_or_update);
+
+    let orderId = 0;
+
+    if (order_or_update.Product) {
+        orderId = order_or_update.Id;
+        p2 = document.createElement("p");
+        p2.innerHTML = "Order No: " + orderId + " |  Product: " + order_or_update.Product;
+    }
+
+    if (order_or_update.Update) {
+        p3 = document.createElement("p");
+        p3.innerHTML = order_or_update.Update;
+        orderId = order_or_update.OrderId;
+    }
+
+
+
+    let orderDivId = "div" + orderId;
+
+    let orderDiv = document.getElementById(orderDivId);
+
+    if (orderDiv == null) {
+        orderDiv = document.createElement("div");
+        orderDiv.id = orderDivId;
+        orderDiv.className = "cssOrderDiv";
+        div.insertAdjacentElement('afterbegin', orderDiv);
+    }
+
+
+    if (p2) orderDiv.appendChild(p2);
+
+    if (p3) orderDiv.appendChild(p3);
+
+
+}
+
+
 
 $(document).ready(() => {
 
@@ -41,7 +97,7 @@ $(document).ready(() => {
             case 1: {
 
                 console.log('Testing dynamic connection setting (ALT script (1)...');
-              
+
                 connection = $.hubConnection();
                 hubProxy = connection.createHubProxy('coffeeHub');
 
@@ -117,6 +173,9 @@ $(document).ready(() => {
         document.getElementById("submit").addEventListener("click",
             e => {
                 e.preventDefault();
+
+
+
                 var statusDiv = document.getElementById("status");
                 statusDiv.innerHTML = "Submitting order..";
 
